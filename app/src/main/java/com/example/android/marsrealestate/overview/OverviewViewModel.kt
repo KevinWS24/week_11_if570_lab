@@ -53,20 +53,16 @@ class OverviewViewModel : ViewModel() {
      * @param filter the [MarsApiFilter] that is sent as part of the web server request
      */
     private fun getMarsRealEstateProperties() {
-        MarsApi.retrofitService.getProperties().enqueue(
-            object: Callback<List<MarsProperty>> {
-                override fun onResponse(call: Call<List<MarsProperty>>,
-                                        response: Response<List<MarsProperty>>) {
-                    var _response = null
-                    _response.value =
-                        "Success: ${response.body()?.size} Mars properties retrieved"
-                }
-
-                override fun onFailure(call: Call<List<MarsProperty>>, t: Throwable) {
-                    var _response = null
-                    _response.value = "Failure: " + t.message
-                }
-            })
+        viewModelScope.launch {
+            try {
+                val listResult = MarsApi.retrofitService.getProperties()
+                var _response = null
+                _response.value = "Success: ${listResult.size} Mars properties retrieved"
+            } catch (e: Exception) {
+                var _response = null
+                _response.value = "Failure: ${e.message}"
+            }
+        }
     }
 
     /**
