@@ -24,15 +24,15 @@ enum class MarsApiStatus { LOADING, ERROR, DONE }
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
-    private val _status = MutableLiveData<MarsApiStatus>()
+    private val _response = MutableLiveData<String>()
 
-    val status: LiveData<MarsApiStatus>
-        get() = _status
+    val response: LiveData<String>
+        get() = _response
 
-    private val _properties = MutableLiveData<List<MarsProperty>>()
+    private val _property = MutableLiveData<MarsProperty>()
 
-    val properties: LiveData<List<MarsProperty>>
-        get() = _properties
+    val property: LiveData<MarsProperty>
+        get() = _property
 
     private val _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
 
@@ -56,10 +56,11 @@ class OverviewViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val listResult = MarsApi.retrofitService.getProperties()
-                var _response = null
                 _response.value = "Success: ${listResult.size} Mars properties retrieved"
+                if (listResult.size > 0) {
+                    _property.value = listResult[0]
+                }
             } catch (e: Exception) {
-                var _response = null
                 _response.value = "Failure: ${e.message}"
             }
         }
