@@ -25,8 +25,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.marsrealestate.R
 import com.example.android.marsrealestate.databinding.FragmentOverviewBinding
-import com.example.android.marsrealestate.databinding.GridViewItemBinding
-import com.example.android.marsrealestate.network.MarsApiFilter
 
 class OverviewFragment : Fragment() {
 
@@ -59,6 +57,7 @@ class OverviewFragment : Fragment() {
         return binding.root
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.overflow_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -68,14 +67,9 @@ class OverviewFragment : Fragment() {
      * Updates the filter in the [OverviewViewModel] when the menu items are selected from the
      * overflow menu.
      */
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.updateFilter(
-                when (item.itemId) {
-                    R.id.show_rent_menu -> MarsApiFilter.SHOW_RENT
-                    R.id.show_buy_menu -> MarsApiFilter.SHOW_BUY
-                    else -> MarsApiFilter.SHOW_ALL
-                }
-        )
+        viewModel.updateFilter()
         return true
     }
 }
